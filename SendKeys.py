@@ -61,15 +61,15 @@ class AdbUtils:
 
 
 def isNewVersion():
-	try:
-		import urllib2
-		response = urllib2.urlopen('https://raw.github.com/casten/SendKeys/master/version')
-		version = response.read().strip()
-		if (version != versionSendKeys):
-			return True
-	except:
-		pass
-	return False
+    try:
+        import urllib2
+        response = urllib2.urlopen('https://raw.github.com/casten/SendKeys/master/version')
+        version = response.read().strip()
+        if (version != versionSendKeys):
+            return True
+    except:
+        pass
+    return False
 
 def checkDevice():
     resp = AdbUtils.adbCommand('devices')
