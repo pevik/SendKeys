@@ -24,10 +24,14 @@ if debug:
 #was originally in a separate file, but I put it in here so it could be a single file
 class AdbUtils:
     adb = 'adb'
+    adbArgs = []
 
     @staticmethod
     def adbCommand(command):
-        process = subprocess.Popen([AdbUtils.adb,command],stdout=subprocess.PIPE)
+        args = AdbUtils.adbArgs
+        args.append(command)
+        args.insert(0, AdbUtils.adb)
+        process = subprocess.Popen(args,stdout=subprocess.PIPE)
         out, _ = process.communicate()
         return out
 
@@ -256,11 +260,15 @@ def processKeys():
 
 
 if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        AdbUtils.adbArgs = sys.argv[1:]
+
     if debug:
         pydevd.settrace()
     if not checkDevice():
         print 'no device attached'
         exit()
+
     stdscr = curses.initscr()
     initCurses(stdscr)
     printLegend()
