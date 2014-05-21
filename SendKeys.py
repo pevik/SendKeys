@@ -23,9 +23,11 @@ if debug:
 
 #was originally in a separate file, but I put it in here so it could be a single file
 class AdbUtils:
+    adb = 'adb'
+
     @staticmethod
     def adbCommand(command):
-        process = subprocess.Popen(['adb',command],stdout=subprocess.PIPE)
+        process = subprocess.Popen([AdbUtils.adb,command],stdout=subprocess.PIPE)
         out, _ = process.communicate()
         return out
 
@@ -33,7 +35,7 @@ class AdbUtils:
     def adbSendKeys(keys):
         command = 'shell input text '+''.join(chr(x) for x in keys)
         args = shlex.split(command)
-        args.insert(0, 'adb')
+        args.insert(0, AdbUtils.adb)
         process = subprocess.Popen(args,stdout=subprocess.PIPE)
         out, _ = process.communicate()
         return out
@@ -46,7 +48,7 @@ class AdbUtils:
 
         command = 'shell '+strSpecials
         args = shlex.split(command)
-        args.insert(0, 'adb')
+        args.insert(0, AdbUtils.adb)
         process = subprocess.Popen(args,stdout=subprocess.PIPE)
         out, _ = process.communicate()
         return out
