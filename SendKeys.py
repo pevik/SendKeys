@@ -264,3 +264,5 @@ if __name__ == '__main__':
     printLegend()
     processKeys()
     cleanupCurses(stdscr)
+
+# vim: set ft=python ts=4 sts=4 sw=4 ai expandtab :
