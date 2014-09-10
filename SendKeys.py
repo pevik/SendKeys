@@ -34,8 +34,8 @@ class AdbUtils:
         inputs = ''
         for x in keys:
             key = chr(x)
-            if key == '\\':
-                key = '\\\\\\\\'
+            if key in ('\\', "'", '"'):
+                key = '\\\\\\' + key
             inputs += key
         command = 'shell input text ' + inputs
         args = shlex.split(command)
