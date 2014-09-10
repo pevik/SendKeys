@@ -37,7 +37,13 @@ class AdbUtils:
 
     @staticmethod
     def adbSendKeys(keys):
-        command = 'shell input text '+''.join(chr(x) for x in keys)
+        inputs = ''
+        for x in keys:
+            key = chr(x)
+            if key == '\\':
+                key = '\\\\\\\\'
+            inputs += key
+        command = 'shell input text ' + inputs
         args = shlex.split(command)
         args.insert(0, AdbUtils.adb)
         process = subprocess.Popen(args,stdout=subprocess.PIPE)
