@@ -28,9 +28,7 @@ class AdbUtils:
 
     @staticmethod
     def adbCommand(command):
-        args = AdbUtils.adbArgs
-        args.append(command)
-        args.insert(0, AdbUtils.adb)
+        args = [ AdbUtils.adb ] + AdbUtils.adbArgs + [ command ]
         process = subprocess.Popen(args,stdout=subprocess.PIPE)
         out, _ = process.communicate()
         return out
@@ -44,8 +42,7 @@ class AdbUtils:
                 key = '\\' + key
             inputs += key
         command = 'shell input text ' + inputs
-        args = shlex.split(command)
-        args.insert(0, AdbUtils.adb)
+        args = [ AdbUtils.adb ] + AdbUtils.adbArgs + shlex.split(command)
         process = subprocess.Popen(args,stdout=subprocess.PIPE)
         out, _ = process.communicate()
         return out
@@ -56,9 +53,8 @@ class AdbUtils:
         for x in specials:
             strSpecials += 'input keyevent ' +str(x)+';'
 
-        command = 'shell '+strSpecials
-        args = shlex.split(command)
-        args.insert(0, AdbUtils.adb)
+        command = 'shell ' + strSpecials
+        args = [ AdbUtils.adb ] + AdbUtils.adbArgs + shlex.split(command)
         process = subprocess.Popen(args,stdout=subprocess.PIPE)
         out, _ = process.communicate()
         return out
