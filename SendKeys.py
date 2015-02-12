@@ -70,9 +70,16 @@ class AdbUtils:
 
 def isNewVersion():
     try:
-        import urllib2
-        response = urllib2.urlopen('https://raw.github.com/casten/SendKeys/master/version')
-        version = response.read().strip()
+        if sys.version < '3':
+            import urllib
+            urlopen = urllib.urlopen
+        else:
+            import urllib.request, urllib.error, urllib.parse
+            urlopen = urllib.request.urlopen
+
+        response = urlopen('https://raw.github.com/casten/SendKeys/master/version')
+        version = response.read().strip().decode('utf-8')
+
         if (version != versionSendKeys):
             return True
     except:
@@ -80,7 +87,7 @@ def isNewVersion():
     return False
 
 def checkDevice():
-    resp = AdbUtils.adbCommand('devices')
+    resp = AdbUtils.adbCommand('devices').decode('utf-8')
     if 'device\n' not in resp:
         return False
     return True
@@ -268,7 +275,7 @@ if __name__ == '__main__':
     if debug:
         pydevd.settrace()
     if not checkDevice():
-        print 'no device attached'
+        print('no device attached')
         exit()
 
     stdscr = curses.initscr()
