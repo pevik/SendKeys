@@ -37,42 +37,49 @@ class AdbUtils:
         process = subprocess.Popen(args,stdout=subprocess.PIPE)
         out, _ = process.communicate()
         return out
-    
+
     @staticmethod
     def adbSendSpecials(specials):
         strSpecials = ''
         for x in specials:
             strSpecials += 'input keyevent ' +str(x)+';'
-             
+
         command = 'shell '+strSpecials
         args = shlex.split(command)
         args.insert(0, 'adb')
         process = subprocess.Popen(args,stdout=subprocess.PIPE)
         out, _ = process.communicate()
         return out
-    
+
     @staticmethod
     def monkeyRunExperiment():
         command = r'/home/casten/adt-bundle-linux-x86_64-20130729/sdk/tools/monkeyrunner'
         args = shlex.split(command)
         process = subprocess.Popen(args,stdout=subprocess.PIPE,stdin=subprocess.PIPE,close_fds=False)
         out, __ = process.communicate("from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice\rdevice = MonkeyRunner.waitForConnection()\rdevice.press('KEYCODE_ENTER', MonkeyDevice.DOWN_AND_UP)\r")
-        return out    
+        return out
 
 
 def isNewVersion():
-	try:
-		import urllib2
-		response = urllib2.urlopen('https://raw.github.com/casten/SendKeys/master/version')
-		version = response.read().strip()
-		if (version != versionSendKeys):
-			return True 
-	except:
-		pass
-	return False
+    try:
+        if sys.version < '3':
+            import urllib
+            urlopen = urllib.urlopen
+        else:
+            import urllib.request, urllib.error, urllib.parse
+            urlopen = urllib.request.urlopen
+
+        response = urlopen('https://raw.github.com/casten/SendKeys/master/version')
+        version = response.read().strip().decode('utf-8')
+
+        if (version != versionSendKeys):
+            return True
+    except:
+        pass
+    return False
 
 def checkDevice():
-    resp = AdbUtils.adbCommand('devices')
+    resp = AdbUtils.adbCommand('devices').decode('utf-8')
     if 'device\n' not in resp:
         return False
     return True
@@ -120,7 +127,7 @@ unmappedCursesKeys = enum(
     KEY_NUMPAD_LEFT_PAREN = 40,
     KEY_NUMPAD_RIGHT_PAREN = 41,
 )
-    
+
 cursesAndroidMap = {
                     curses.KEY_HOME:andKeys.KEYCODE_HOME,
                     unmappedCursesKeys.KEY_BACK:andKeys.KEYCODE_BACK,
@@ -142,7 +149,7 @@ def cursesToAndroid(c):
         return True,cursesAndroidMap[c]
     else:
         return False,c
-    
+
 def printLegend():
             curses.start_color()
             curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK);
@@ -160,12 +167,12 @@ def printLegend():
                 stdscr.addstr(9,0,'Note:  a new version is available at http://github.com/casten/SendKeys',curses.A_REVERSE)
                 stdscr.refresh()
 
-	
+
 #This handles the queue of keys in a (hopefully!) thread safe manner
 class keyQueue():
     queue = []
     lock = Lock()
-    
+
     #This gets a block of values that are all of the same type (special or normal).
     #We do this because we send blocks of keys of the same type since we use slightly
     #different methods for sending them over.
@@ -181,7 +188,7 @@ class keyQueue():
                 break
         self.lock.release()
         return isSpecial,vals
-    
+
     def enqueue(self, key):
         self.lock.acquire()
         self.queue.append(key)
@@ -191,13 +198,13 @@ class keyQueue():
         item = self.queue[0]
         del self.queue[0]
         return item
-    
+
     def dequeue(self):
         self.lock.acquire()
         item = self._dequeue()
         self.lock.release()
         return item
-    
+
     def _size(self):
         length = len(self.queue)
         return length
@@ -207,13 +214,13 @@ class keyQueue():
         length = self._size()
         self.lock.release()
         return length
-    
+
     def _peek(self,index):
         item = self.queue[index]
         return item
-    
+
 #Threadproc for reading keys asynchronously from cursers and putting them in the
-#queue to send            
+#queue to send
 def keyReader(scr,kq,killme):
     while(not killme.isSet()):
         key = scr.getch(1,0)
@@ -225,7 +232,7 @@ def keyReader(scr,kq,killme):
 
 def processKeys():
     thread = None
-    killEvent = Event() 
+    killEvent = Event()
     lastFlush = time.time()
     kq = keyQueue()
     thread = Thread(target=keyReader,args=(stdscr,kq,killEvent))
@@ -237,7 +244,7 @@ def processKeys():
                 time.sleep(0.1)
             now = time.time()
             #queue up keys for 1 second before sending off since there
-            #is a lot of latency sending events across adb 
+            #is a lot of latency sending events across adb
             if ((now - lastFlush) > 1):
                 while(kq.size() > 0):
                     #get the next block of keys of the same type (special or not)
@@ -251,20 +258,20 @@ def processKeys():
         except KeyboardInterrupt:
             break
     killEvent.set()
-    
-    
-if __name__ == '__main__':    
+
+
+if __name__ == '__main__':
     if debug:
         pydevd.settrace()
-    if not checkDevice():   
-        print 'no device attached'
+    if not checkDevice():
+        print('no device attached')
         exit()
     stdscr = curses.initscr()
     initCurses(stdscr)
     printLegend()
     processKeys()
     cleanupCurses(stdscr)
-        
+
 
 
 
