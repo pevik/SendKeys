@@ -12,6 +12,13 @@ import threading
 from threading import Thread, Lock, Event
 import sys
 
+if sys.version < '3':
+    import urllib
+    urlopen = urllib.urlopen
+else:
+    import urllib.request, urllib.error, urllib.parse
+    urlopen = urllib.request.urlopen
+
 versionSendKeys='0.1'
 
 debug=False
@@ -62,13 +69,6 @@ class AdbUtils:
 
 def isNewVersion():
     try:
-        if sys.version < '3':
-            import urllib
-            urlopen = urllib.urlopen
-        else:
-            import urllib.request, urllib.error, urllib.parse
-            urlopen = urllib.request.urlopen
-
         response = urlopen('https://raw.github.com/casten/SendKeys/master/version')
         version = response.read().strip().decode('utf-8')
 
