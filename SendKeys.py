@@ -42,16 +42,21 @@ class AdbUtils:
 
     @staticmethod
     def adbSendKeys(keys):
+        out = None
         inputs = ''
         for x in keys:
-            key = chr(x)
-            if key in ('\\', "'", '"'):
-                key = '\\' + key
-            inputs += key
-        command = 'shell input text ' + inputs
-        args = [ AdbUtils.adb ] + AdbUtils.adbArgs + shlex.split(command)
-        process = subprocess.Popen(args,stdout=subprocess.PIPE)
-        out, _ = process.communicate()
+            try:
+                key = chr(x)
+                if key in ('\\', "'", '"'):
+                    key = '\\' + key
+                inputs += key
+            except ValueError:
+                pass
+        if inputs:
+            command = 'shell input text ' + inputs
+            args = [ AdbUtils.adb ] + AdbUtils.adbArgs + shlex.split(command)
+            process = subprocess.Popen(args,stdout=subprocess.PIPE)
+            out, _ = process.communicate()
         return out
 
     @staticmethod
