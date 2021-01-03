@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 '''
-Created on Aug 19, 2013
-
 This sends keys from a terminal to an android device.
 
-@author: Casten Riepling
+Copyright (c) Casten Riepling, 2013
+Copyright (c) Petr Vorel, 2014-2020
 '''
+
 import curses,time
 import subprocess,shlex
 import threading
@@ -19,7 +19,7 @@ else:
     import urllib.request, urllib.error, urllib.parse
     urlopen = urllib.request.urlopen
 
-versionSendKeys='0.1'
+versionSendKeys = '0.1'
 
 class AdbUtils:
     adb = 'adb'
