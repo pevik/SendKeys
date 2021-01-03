@@ -30,7 +30,7 @@ class AdbUtils:
     @staticmethod
     def adbCommand(command):
         args = [ AdbUtils.adb ] + AdbUtils.adbArgs + [ command ]
-        process = subprocess.Popen(args,stdout=subprocess.PIPE)
+        process = subprocess.Popen(args, stdout=subprocess.PIPE)
         out, _ = process.communicate()
         return out
 
@@ -49,7 +49,7 @@ class AdbUtils:
         if inputs:
             command = 'shell input text ' + inputs
             args = [ AdbUtils.adb ] + AdbUtils.adbArgs + shlex.split(command)
-            process = subprocess.Popen(args,stdout=subprocess.PIPE)
+            process = subprocess.Popen(args, stdout=subprocess.PIPE)
             out, _ = process.communicate()
         return out
 
@@ -61,7 +61,7 @@ class AdbUtils:
 
         command = 'shell ' + strSpecials
         args = [ AdbUtils.adb ] + AdbUtils.adbArgs + shlex.split(command)
-        process = subprocess.Popen(args,stdout=subprocess.PIPE)
+        process = subprocess.Popen(args, stdout=subprocess.PIPE)
         out, _ = process.communicate()
         return out
 
@@ -144,23 +144,23 @@ cursesAndroidMap = {
 
 def cursesToAndroid(c):
     if c in cursesAndroidMap:
-        return True,cursesAndroidMap[c]
+        return True, cursesAndroidMap[c]
     else:
-        return False,c
+        return False, c
 
 def printLegend():
             curses.start_color()
             curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK);
-            stdscr.addstr(0,0,'SendKeys for Android')
-            stdscr.addstr(0,21,'by Casten Riepling (2013), modified by Petr Vorel (2014-2020)')
-            stdscr.addstr(3,0,'        Special Keys        ',curses.A_UNDERLINE)
-            stdscr.addstr(4,0,'HOME key      - Android Home')
-            stdscr.addstr(5,0,'ESCape key    - Android Back')
-            stdscr.addstr(6,0,'INSert key    - Take Picture')
-            stdscr.addstr(7,0,'Arrow keys    - DPAD Keys')
-            stdscr.addstr(8,0,'Ctrl-c        - Quit')
+            stdscr.addstr(0, 0, 'SendKeys for Android')
+            stdscr.addstr(0, 21, 'by Casten Riepling (2013), modified by Petr Vorel (2014-2020)')
+            stdscr.addstr(3, 0, '        Special Keys        ', curses.A_UNDERLINE)
+            stdscr.addstr(4, 0, 'HOME key      - Android Home')
+            stdscr.addstr(5, 0, 'ESCape key    - Android Back')
+            stdscr.addstr(6, 0, 'INSert key    - Take Picture')
+            stdscr.addstr(7, 0, 'Arrow keys    - DPAD Keys')
+            stdscr.addstr(8, 0, 'Ctrl-c        - Quit')
             if (isNewVersion()):
-                stdscr.addstr(9,0,'Note:  new version is available at https://' + SOURCE, curses.A_REVERSE)
+                stdscr.addstr(9, 0, 'Note:  new version is available at https://' + SOURCE, curses.A_REVERSE)
                 stdscr.refresh()
 
 
@@ -174,7 +174,7 @@ class keyQueue():
     #different methods for sending them over.
     def getValsBlock(self):
         self.lock.acquire()
-        isSpecial,val = self._dequeue()
+        isSpecial, val = self._dequeue()
         vals = [val]
         while(self._size()):
             if self._peek(0)[0] == isSpecial:
@@ -183,7 +183,7 @@ class keyQueue():
             else:
                 break
         self.lock.release()
-        return isSpecial,vals
+        return isSpecial, vals
 
     def enqueue(self, key):
         self.lock.acquire()
@@ -211,18 +211,18 @@ class keyQueue():
         self.lock.release()
         return length
 
-    def _peek(self,index):
+    def _peek(self, index):
         item = self.queue[index]
         return item
 
 #Threadproc for reading keys asynchronously from cursers and putting them in the
 #queue to send
-def keyReader(scr,kq,killme):
+def keyReader(scr, kq, killme):
     while(not killme.isSet()):
-        key = scr.getch(1,0)
+        key = scr.getch(1, 0)
         if (key != -1):
             isSpecial, key = cursesToAndroid(key)
-            kq.enqueue([isSpecial,key])
+            kq.enqueue([isSpecial, key])
         else:
             time.sleep(0.1)
 
@@ -231,7 +231,7 @@ def processKeys():
     killEvent = Event()
     lastFlush = time.time()
     kq = keyQueue()
-    thread = Thread(target=keyReader,args=(stdscr,kq,killEvent))
+    thread = Thread(target=keyReader, args=(stdscr, kq, killEvent))
     thread.name = 'keyboard-reader'
     thread.start()
     while(True):
@@ -244,7 +244,7 @@ def processKeys():
             if ((now - lastFlush) > 1):
                 while(kq.size() > 0):
                     #get the next block of keys of the same type (special or not)
-                    isSpecial,vals = kq.getValsBlock()
+                    isSpecial, vals = kq.getValsBlock()
                     if (isSpecial):
                         AdbUtils.adbSendSpecials(vals)
                     else:
