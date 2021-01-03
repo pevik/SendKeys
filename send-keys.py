@@ -58,7 +58,7 @@ class AdbUtils:
     def adbSendSpecials(specials):
         strSpecials = ''
         for x in specials:
-            strSpecials += 'input keyevent ' +str(x)+';'
+            strSpecials += 'input keyevent ' + str(x) + ';'
 
         command = 'shell ' + strSpecials
         args = [ AdbUtils.adb ] + AdbUtils.adbArgs + shlex.split(command)
