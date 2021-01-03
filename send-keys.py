@@ -63,15 +63,6 @@ class AdbUtils:
         out, _ = process.communicate()
         return out
 
-    @staticmethod
-    def monkeyRunExperiment():
-        command = r'/home/casten/adt-bundle-linux-x86_64-20130729/sdk/tools/monkeyrunner'
-        args = shlex.split(command)
-        process = subprocess.Popen(args,stdout=subprocess.PIPE,stdin=subprocess.PIPE,close_fds=False)
-        out, __ = process.communicate("from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice\rdevice = MonkeyRunner.waitForConnection()\rdevice.press('KEYCODE_ENTER', MonkeyDevice.DOWN_AND_UP)\r")
-        return out
-
-
 def isNewVersion():
     try:
         response = urlopen('https://raw.github.com/casten/SendKeys/master/version')
