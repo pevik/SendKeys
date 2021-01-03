@@ -9,7 +9,6 @@ Copyright (c) Petr Vorel, 2014-2020
 SOURCE = 'github.com/pevik/SendKeys'
 
 import curses
-import shlex
 import sys
 import subprocess
 from threading import Thread, Lock, Event
@@ -42,14 +41,14 @@ class AdbUtils:
         for x in keys:
             try:
                 key = chr(x)
-                if key in ('\\', "'", '"'):
-                    key = '\\' + key
+                if key == "'":
+                    key = "'\"'\"'"
                 inputs += key
             except ValueError:
                 pass
         if inputs:
-            command = 'shell input text ' + inputs
-            args = [ AdbUtils.adb ] + AdbUtils.adbArgs + shlex.split(command)
+            command = [ 'shell', 'input', 'text' ]
+            args = [ AdbUtils.adb ] + AdbUtils.adbArgs + command + [ "'" + inputs + "'" ]
             process = subprocess.Popen(args, stdout=subprocess.PIPE)
             out, _ = process.communicate()
         return out
