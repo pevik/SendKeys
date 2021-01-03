@@ -152,9 +152,7 @@ def printLegend():
             curses.start_color()
             curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK);
             stdscr.addstr(0,0,'SendKeys for Android')
-            stdscr.attron(curses.color_pair(1));
             stdscr.addstr(0,21,'by Casten Riepling (2013), modified by Petr Vorel (2014-2020)')
-            stdscr.attroff(curses.color_pair(1));
             stdscr.addstr(3,0,'        Special Keys        ',curses.A_UNDERLINE)
             stdscr.addstr(4,0,'HOME key      - Android Home')
             stdscr.addstr(5,0,'ESCape key    - Android Back')
