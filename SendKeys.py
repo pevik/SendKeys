@@ -21,14 +21,6 @@ else:
 
 versionSendKeys='0.1'
 
-debug=False
-if debug:
-    #update for your location of pydev if you want to debug in pydev (curses precludes from using Eclipse)
-    sys.path.append(r'/home/casten/adt-bundle-linux-x86_64-20130729/eclipse/plugins/org.python.pydev_2.8.1.2013072611/pysrc')
-    import pydevd
-
-
-#was originally in a separate file, but I put it in here so it could be a single file
 class AdbUtils:
     adb = 'adb'
     adbArgs = []
@@ -277,8 +269,6 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         AdbUtils.adbArgs = sys.argv[1:]
 
-    if debug:
-        pydevd.settrace()
     if not checkDevice():
         print('no device attached')
         exit()
