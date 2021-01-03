@@ -107,7 +107,7 @@ def cleanupCurses(scr):
 def enum(**enums):
     return type('Enum', (), enums)
 
-andKeys = enum(
+androidKeys = enum(
     KEYCODE_HOME = 3,
     KEYCODE_BACK = 4,
     KEYCODE_DPAD_UP = 19,
@@ -134,19 +134,19 @@ unmappedCursesKeys = enum(
 )
 
 cursesAndroidMap = {
-                    curses.KEY_HOME:andKeys.KEYCODE_HOME,
-                    unmappedCursesKeys.KEY_BACK:andKeys.KEYCODE_BACK,
-                    curses.KEY_UP:andKeys.KEYCODE_DPAD_UP,
-                    curses.KEY_DOWN:andKeys.KEYCODE_DPAD_DOWN,
-                    curses.KEY_LEFT:andKeys.KEYCODE_DPAD_LEFT,
-                    curses.KEY_RIGHT:andKeys.KEYCODE_DPAD_RIGHT,
-                    curses.KEY_IC:andKeys.KEYCODE_CAMERA,
-                    unmappedCursesKeys.KEY_TAB:andKeys.KEYCODE_TAB,
-                    unmappedCursesKeys.KEY_ENTER:andKeys.KEYCODE_ENTER,
-                    unmappedCursesKeys.KEY_SPACE:andKeys.KEYCODE_SPACE,
-                    curses.KEY_BACKSPACE:andKeys.KEYCODE_DEL,
-                    unmappedCursesKeys.KEY_NUMPAD_LEFT_PAREN:andKeys.KEYCODE_NUMPAD_LEFT_PAREN,
-                    unmappedCursesKeys.KEY_NUMPAD_RIGHT_PAREN:andKeys.KEYCODE_NUMPAD_RIGHT_PAREN,
+                    curses.KEY_HOME:androidKeys.KEYCODE_HOME,
+                    unmappedCursesKeys.KEY_BACK:androidKeys.KEYCODE_BACK,
+                    curses.KEY_UP:androidKeys.KEYCODE_DPAD_UP,
+                    curses.KEY_DOWN:androidKeys.KEYCODE_DPAD_DOWN,
+                    curses.KEY_LEFT:androidKeys.KEYCODE_DPAD_LEFT,
+                    curses.KEY_RIGHT:androidKeys.KEYCODE_DPAD_RIGHT,
+                    curses.KEY_IC:androidKeys.KEYCODE_CAMERA,
+                    unmappedCursesKeys.KEY_TAB:androidKeys.KEYCODE_TAB,
+                    unmappedCursesKeys.KEY_ENTER:androidKeys.KEYCODE_ENTER,
+                    unmappedCursesKeys.KEY_SPACE:androidKeys.KEYCODE_SPACE,
+                    curses.KEY_BACKSPACE:androidKeys.KEYCODE_DEL,
+                    unmappedCursesKeys.KEY_NUMPAD_LEFT_PAREN:androidKeys.KEYCODE_NUMPAD_LEFT_PAREN,
+                    unmappedCursesKeys.KEY_NUMPAD_RIGHT_PAREN:androidKeys.KEYCODE_NUMPAD_RIGHT_PAREN,
                     }
 
 def cursesToAndroid(c):
