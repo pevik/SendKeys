@@ -55,13 +55,10 @@ class AdbUtils:
         return out
 
     @staticmethod
-    def adbSendSpecials(specials):
-        strSpecials = ''
-        for x in specials:
-            strSpecials += 'input keyevent ' + str(x) + ';'
-
-        command = 'shell ' + strSpecials
-        args = [ AdbUtils.adb ] + AdbUtils.adbArgs + shlex.split(command)
+    def adbSendSpecials(special):
+        # deliberatelly ignore possibility to have more events (unlikely)
+        command = [ 'shell', 'input', 'keyevent', str(special[0]) ]
+        args = [ AdbUtils.adb ] + AdbUtils.adbArgs + command
         process = subprocess.Popen(args, stdout=subprocess.PIPE)
         out, _ = process.communicate()
         return out
@@ -244,7 +241,7 @@ def processKeys():
             #is a lot of latency sending events across adb
             if ((now - lastFlush) > 1):
                 while(kq.size() > 0):
-                    #get the next block of keys of the same type (special or not)
+                    # get the next block of keys of the same type (special or not)
                     isSpecial, vals = kq.getValsBlock()
                     if (isSpecial):
                         AdbUtils.adbSendSpecials(vals)
