@@ -129,8 +129,8 @@ unmappedCursesKeys = enum(
     KEY_TAB = 9,
     KEY_ENTER = 10,
     KEY_SPACE = 32,
-    KEY_NUMPAD_LEFT_PAREN = 40,
-    KEY_NUMPAD_RIGHT_PAREN = 41,
+    KEY_LEFT_BRACKET = 40,
+    KEY_RIGHT_BRACKET = 41,
 )
 
 cursesAndroidMap = {
@@ -145,9 +145,9 @@ cursesAndroidMap = {
                     unmappedCursesKeys.KEY_ENTER:androidKeys.KEYCODE_ENTER,
                     unmappedCursesKeys.KEY_SPACE:androidKeys.KEYCODE_SPACE,
                     curses.KEY_BACKSPACE:androidKeys.KEYCODE_DEL,
-                    unmappedCursesKeys.KEY_NUMPAD_LEFT_PAREN:androidKeys.KEYCODE_NUMPAD_LEFT_PAREN,
-                    unmappedCursesKeys.KEY_NUMPAD_RIGHT_PAREN:androidKeys.KEYCODE_NUMPAD_RIGHT_PAREN,
-                    }
+                    unmappedCursesKeys.KEY_LEFT_BRACKET:androidKeys.KEYCODE_NUMPAD_LEFT_PAREN,
+                    unmappedCursesKeys.KEY_RIGHT_BRACKET:androidKeys.KEYCODE_NUMPAD_RIGHT_PAREN,
+}
 
 def cursesToAndroid(c):
     if c in cursesAndroidMap:
