@@ -6,6 +6,8 @@ Copyright (c) Casten Riepling, 2013
 Copyright (c) Petr Vorel, 2014-2020
 '''
 
+SOURCE = 'github.com/pevik/SendKeys'
+
 import curses,time
 import subprocess,shlex
 import threading
@@ -65,7 +67,7 @@ class AdbUtils:
 
 def isNewVersion():
     try:
-        response = urlopen('https://raw.github.com/casten/SendKeys/master/version')
+        response = urlopen('https://raw.' + SOURCE + '/master/version')
         version = response.read().strip().decode('utf-8')
 
         if (version != versionSendKeys):
@@ -160,7 +162,7 @@ def printLegend():
             stdscr.addstr(7,0,'Arrow keys    - DPAD Keys')
             stdscr.addstr(8,0,'Ctrl-c        - Quit')
             if (isNewVersion()):
-                stdscr.addstr(9,0,'Note:  a new version is available at http://github.com/casten/SendKeys',curses.A_REVERSE)
+                stdscr.addstr(9,0,'Note:  new version is available at https://' + SOURCE, curses.A_REVERSE)
                 stdscr.refresh()
 
 
