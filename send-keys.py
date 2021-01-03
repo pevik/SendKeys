@@ -8,11 +8,13 @@ Copyright (c) Petr Vorel, 2014-2020
 
 SOURCE = 'github.com/pevik/SendKeys'
 
-import curses,time
-import subprocess,shlex
+import curses
+import shlex
+import sys
+import subprocess
 import threading
 from threading import Thread, Lock, Event
-import sys
+import time
 
 if sys.version < '3':
     import urllib
