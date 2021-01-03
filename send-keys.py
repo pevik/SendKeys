@@ -12,7 +12,6 @@ import curses
 import shlex
 import sys
 import subprocess
-import threading
 from threading import Thread, Lock, Event
 import time
 
