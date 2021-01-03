@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-This sends keys from a terminal to an android device.
+Sends keys from a terminal to an android device
 
 Copyright (c) Casten Riepling, 2013
 Copyright (c) Petr Vorel, 2014-2020
